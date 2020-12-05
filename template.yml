@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: A sample SAM template for deploying Lambda functions.
+
+Resources:
+  # Specifies the BeforeAllowTraffic lifecycle hook Lambda function
+  beforeAllowTraffic:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Policies:
+        - Version: "2012-10-17"
+          # Grants this function permission to call lambda:InvokeFunction
+          Statement:
+            - Effect: "Allow"
+              Action:
+                - "lambda:InvokeFunction"
+              Resource: !Ref myDateTimeFunction.Version
+      Runtime: nodejs10.x
+      # Specifies the name of the Lambda hook function
+      FunctionName: 'poc-sam-created-lambda'
+      DeploymentPreference:
+        Enabled: false
+      Timeout: 5
